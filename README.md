@@ -116,7 +116,7 @@ If you find this code useful for your research, please cite our paper:
 ```bibtex
 @article{EdgeNMF2025,
   title={Lightweight and Noise-Resilient Feature Extraction for Edge Computing: A Comparative Study of Robust NMF Algorithms},
-  author={Wu, Kezhao and Li, Jiayi and Yan, Yaodong and Cai, Ruilin},
+  author={Wu, K.; Li, J.; Yan, Y.; Cai, R.},
   journal={Under Review},
   year={2025}
 }
