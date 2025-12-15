@@ -4,10 +4,8 @@
 [![License](https://img.shields.io/badge/license-MIT-green)](./LICENSE)
 [![Preprint](https://img.shields.io/badge/Submitted%20to-Sensors-red)](https://www.mdpi.com/journal/sensors)
 
-<div align="center">
-  <img src="https://github.com/user-attachments/assets/PLACEHOLDER_FOR_YOUR_Tradeoff_Plot_IMAGE" width="600" alt="Efficiency-Robustness Trade-off" />
-  <p><em>Figure: The Efficiency-Robustness Trade-off. L1-NMF (Green) occupies the "Edge Sweet Spot".</em></p>
-</div>
+![L1_IRLS](https://github.com/user-attachments/assets/d263e0f9-a65b-4454-8df2-c1cbcfc53bf7)
+
 
 This repository contains the **official implementation** of the paper:
 
@@ -28,6 +26,7 @@ This project focuses on three critical dimensions of Edge AI:
 2.  **Computational Efficiency (Fig. 2):** Proving that $L_1$-NMF is not only robust but also lightweight, achieving inference speeds comparable to fast baselines while reducing peak memory usage by ~35%.
 3.  **The "Edge Sweet Spot" (Fig. 3):** Visualizing the trade-off between accuracy and latency. $L_1$-NMF is identified as the only algorithm that balances high noise resilience with low computational cost.
 4.  **Hardware-Aware Profiling:** Integrated `tracemalloc` and timer utilities to accurately simulate edge hardware constraints.
+<img width="3000" height="1800" alt="Fig1_Robustness" src="https://github.com/user-attachments/assets/8319efd8-acb2-4aa5-bf20-84837a3e7e28" />
 
 ---
 
