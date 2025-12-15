@@ -62,3 +62,63 @@ This script runs 5 NMF variants (L2, MU, L1, HC, StackMU) across varying noise l
 # Run the main benchmark loop
 # This will generate Excel files in the 'results/' directory
 python main_benchmark.py
+````
+
+> **Note:** The script automatically handles noise injection and data preprocessing (`reduce=3` for edge simulation).
+
+### Step 2: Data Aggregation
+
+After the experiments finish, aggregate the raw logs into a summary table for plotting.
+
+```bash
+python aggregate_results.py
+```
+
+  * **Output:** `ALL_ALGO_SUMMARY.xlsx` containing mean/std for all metrics.
+
+### Step 3: Visualization (Reproducing Paper Figures)
+
+Generate the three key figures used in the "Experimental Results" section.
+
+```bash
+python plot_figures.py
+```
+
+  * **Outputs:**
+      * `Fig1_Robustness.png`: ACC vs. Noise Level (Highlighting the robust plateau).
+      * `Fig2_Efficiency.png`: Bar charts for Inference Time and Peak Memory.
+      * `Fig3_Tradeoff.png`: The Scatter plot showing the "Edge Sweet Spot".
+
+-----
+
+## 📂 Repository Structure
+
+  * `algorithms/`: Core implementations of NMF variants.
+      * `l1_nmf.py`: **Our proposed robust L1-NMF (IRLS).**
+      * `l2_nmf.py`: Standard Gradient Descent NMF.
+      * `mu_nmf.py`: Lee-Seung Multiplicative Update.
+      * `hc_nmf.py`: Hypersurface Cost NMF.
+      * `stack_nmf.py`: Stacked Multiplicative Updates.
+  * `utils/`: Helper functions.
+      * `dataloader.py`: Handles image loading, resizing, and salt-and-pepper noise injection.
+      * `metrics.py`: Evaluates ACC, NMI, and RRE.
+  * `main_benchmark.py`: Main entry point for running experiments.
+  * `plot_figures.py`: Script to reproduce paper figures.
+  * `results/`: Directory for storing experimental logs and Excel files.
+  * `data/`: Directory for raw datasets.
+
+-----
+
+## 📜 Citation
+
+If you find this code useful for your research, please cite our paper:
+
+```bibtex
+@article{EdgeNMF2025,
+  title={Lightweight and Noise-Resilient Feature Extraction for Edge Computing: A Comparative Study of Robust NMF Algorithms},
+  author={Wu, Kezhao and Li, Jiayi and Yan, Yaodong and Cai, Ruilin},
+  journal={Under Review},
+  year={2025}
+}
+```
+*Maintained by [WilsonWukz](https://www.google.com/search?q=https://github.com/WilsonWukz).*
