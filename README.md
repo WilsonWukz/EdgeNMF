@@ -1,6 +1,5 @@
 # Lightweight and Noise-Resilient Feature Extraction for Edge Computing
-![L1_IRLS](https://github.com/user-attachments/assets/c67dbcf7-c35f-43e4-8939-79a8a89c3487)
-![Deep NMF](https://github.com/user-attachments/assets/f2c3c5dd-9ed0-4afe-bdc2-40c670b21c80)
+![L1_IRLS](https://github.com/user-attachments/assets/c67dbcf7-c35f-43e4-8939-79a8a89c3487)![Deep NMF](https://github.com/user-attachments/assets/f2c3c5dd-9ed0-4afe-bdc2-40c670b21c80)
 This repository contains the official implementation of the paper:
 **"Lightweight and Noise-Resilient Feature Extraction for Edge Computing: A Comparative Study of Robust NMF Algorithms"** (Submitted to *Sensors*, 2025).
 
