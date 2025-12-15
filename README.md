@@ -2,15 +2,13 @@
 
 [![Python](https://img.shields.io/badge/Python-3.9%2B-blue)](https://www.python.org/)
 [![License](https://img.shields.io/badge/license-MIT-green)](./LICENSE)
-[![Preprint](https://img.shields.io/badge/Submitted%20to-Sensors-red)](https://www.mdpi.com/journal/sensors)
+[![Status](https://img.shields.io/badge/Status-Under%20Review-orange)]()
 
 ![L1_IRLS](https://github.com/user-attachments/assets/d263e0f9-a65b-4454-8df2-c1cbcfc53bf7)
 
-
 This repository contains the **official implementation** of the paper:
 
-> **"Lightweight and Noise-Resilient Feature Extraction for Edge Computing: A Comparative Study of Robust NMF Algorithms"**
-> *Submitted to Sensors (2025)*
+> **"Lightweight and Noise-Resilient Feature Extraction for Edge Computing: A Comparative Study of Robust NMF Algorithms"** (2025)
 
 This project provides a comprehensive benchmark of Non-negative Matrix Factorization (NMF) algorithms tailored for **resource-constrained edge devices** (e.g., IoT sensors, Raspberry Pi). It systematically evaluates robustness against **impulsive sensor noise** (salt-and-pepper) and computational efficiency.
 
@@ -26,6 +24,7 @@ This project focuses on three critical dimensions of Edge AI:
 2.  **Computational Efficiency (Fig. 2):** Proving that $L_1$-NMF is not only robust but also lightweight, achieving inference speeds comparable to fast baselines while reducing peak memory usage by ~35%.
 3.  **The "Edge Sweet Spot" (Fig. 3):** Visualizing the trade-off between accuracy and latency. $L_1$-NMF is identified as the only algorithm that balances high noise resilience with low computational cost.
 4.  **Hardware-Aware Profiling:** Integrated `tracemalloc` and timer utilities to accurately simulate edge hardware constraints.
+
 <img width="3000" height="1800" alt="Fig1_Robustness" src="https://github.com/user-attachments/assets/8319efd8-acb2-4aa5-bf20-84837a3e7e28" />
 
 ---
@@ -63,63 +62,3 @@ This script runs 5 NMF variants (L2, MU, L1, HC, StackMU) across varying noise l
 # Run the main benchmark loop
 # This will generate Excel files in the 'results/' directory
 python main_benchmark.py
-````
-
-> **Note:** The script automatically handles noise injection and data preprocessing (`reduce=3` for edge simulation).
-
-### Step 2: Data Aggregation
-
-After the experiments finish, aggregate the raw logs into a summary table for plotting.
-
-```bash
-python aggregate_results.py
-```
-
-  * **Output:** `ALL_ALGO_SUMMARY.xlsx` containing mean/std for all metrics.
-
-### Step 3: Visualization (Reproducing Paper Figures)
-
-Generate the three key figures used in the "Experimental Results" section.
-
-```bash
-python plot_figures.py
-```
-
-  * **Outputs:**
-      * `Fig1_Robustness.png`: ACC vs. Noise Level (Highligting the robust plateau).
-      * `Fig2_Efficiency.png`: Bar charts for Inference Time and Peak Memory.
-      * `Fig3_Tradeoff.png`: The Scatter plot showing the "Edge Sweet Spot".
-
------
-
-## 📂 Repository Structure
-
-  * `algorithms/`: Core implementations of NMF variants.
-      * `l1_nmf.py`: **Our proposed robust L1-NMF (IRLS).**
-      * `l2_nmf.py`: Standard Gradient Descent NMF.
-      * `mu_nmf.py`: Lee-Seung Multiplicative Update.
-      * `hc_nmf.py`: Hypersurface Cost NMF.
-      * `stack_nmf.py`: Stacked Multiplicative Updates.
-  * `utils/`: Helper functions.
-      * `dataloader.py`: Handles image loading, resizing, and salt-and-pepper noise injection.
-      * `metrics.py`: Evaluates ACC, NMI, and RRE.
-  * `main_benchmark.py`: Main entry point for running experiments.
-  * `plot_figures.py`: Script to reproduce paper figures.
-  * `results/`: Directory for storing experimental logs and Excel files.
-  * `data/`: Directory for raw datasets.
-
------
-
-## 📜 Citation
-
-If you find this code useful for your research, please cite our paper:
-
-```bibtex
-@article{EdgeNMF2025,
-  title={Lightweight and Noise-Resilient Feature Extraction for Edge Computing: A Comparative Study of Robust NMF Algorithms},
-  author={Wu, Kezhao and Li, Jiayi and Yan, Yaodong and Cai, Ruilin},
-  journal={Submitted to Sensors},
-  year={2025}
-}
-```
-*Maintained by [WilsonWukz](https://www.google.com/search?q=https://github.com/WilsonWukz).*
