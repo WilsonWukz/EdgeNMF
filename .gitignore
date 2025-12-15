@@ -1,0 +1,56 @@
+# 1. Python & System Basics
+__pycache__/
+*.py[cod]
+*$py.class
+
+# OS specific
+.DS_Store
+Thumbs.db
+
+# Virtual Environments
+venv/
+env/
+.venv/
+
+# 2. IDE Settings (PyCharm / VSCode)
+.idea/
+# VS Code settings (以防万一)
+.vscode/
+
+# 3. Data & Large Files (数据集)
+data/
+datasets/
+ORL/
+YaleB/
+
+*.zip
+*.tar.gz
+*.rar
+*.mat
+
+# 4. Artifacts & Outputs
+*.xlsx
+*.csv
+
+*.png
+*.jpg
+*.jpeg
+*.pdf
+*.svg
+
+*.npy
+*.npz
+*.pkl
+*.h5
+
+results/
+outputs/
+logs/
+
+# 5. Notebook Checkpoints
+.ipynb_checkpoints/
+
+# ==========================
+# 6. Safety Net
+# ==========================
+!*.py
