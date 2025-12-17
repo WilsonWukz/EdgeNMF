@@ -129,9 +129,4 @@ If you find this code useful for your research, please cite our paper:
 }
 
 ```
-
-<<<<<<< Updated upstream
 *Maintained by [WilsonWukz](https://www.google.com/search?q=https://github.com/WilsonWukz).*
-=======
-*Maintained by [WilsonWukz](https://www.google.com/search?q=https://github.com/WilsonWukz).*
->>>>>>> Stashed changes
