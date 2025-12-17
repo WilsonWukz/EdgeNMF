@@ -42,23 +42,92 @@ In this work, **we present** a comprehensive benchmark of Non-negative Matrix Fa
     ```bash
     pip install -r requirements.txt
     ```
-    *Core dependencies: `numpy`, `scipy`, `scikit-learn`, `matplotlib`, `seaborn`, `pandas`, `openpyxl`.*
+    *Core dependencies: `numpy`, `pillow`, `scipy`, `scikit-learn`, `matplotlib`, `seaborn`, `pandas`, `openpyxl`.*
 
 3.  **Prepare Datasets:**
     - Place the **ORL** dataset in `data/ORL/`.
     - Place the **Extended Yale B** dataset in `data/YaleB/`.
-    *(Note: Our pipeline includes preprocessing steps to auto-resize and inject noise.)*
+    *(Note: Our scripts include preprocessing steps to auto-resize and inject noise.)*
 
 ---
 
 ## 🚀 Usage Guide: The Reproduction Pipeline
 
-To fully reproduce **our results**, follow this pipeline: **Run Experiments -> Aggregate Data -> Visualize**.
+To fully reproduce **our results**, follow this pipeline: **Batch Training -> Data Aggregation -> Visualization**.
 
-### Step 1: Run NMF Benchmarks
-This script runs 5 NMF variants (L2, MU, L1, HC, StackMU) across varying noise levels ($p \in [0, 0.5]$) and random seeds. It records Accuracy (ACC), NMI, Time, and Peak Memory.
+### Step 1: Run Batch Experiments
+We provide a master automation script (`auto.py`) that sequentially executes the training scripts for all 5 algorithms across both datasets.
+
+**What this script does:**
+1.  Automatically triggers the 10 individual scripts (e.g., `l2_orl.py`, `l1_yale.py`, etc.).
+2.  Injects noise ($p \in [0, 0.5]$) and runs multiple random seeds.
+3.  **Automatically merges** the results into `ALL_ALGO_SUMMARY.xlsx`.
 
 ```bash
-# Run the main benchmark loop
-# This will generate Excel files in the 'results/' directory
-python main_benchmark.py
+# Execute the batch training pipeline
+python auto.py
+
+```
+
+> **Note:** This process may take some time. The script will print the progress of each algorithm as it finishes.
+
+### Step 2: Visualization (Reproducing Paper Figures)
+
+Once `ALL_ALGO_SUMMARY.xlsx` is generated, run the visualization script to produce the exact figures used in the manuscript.
+
+```bash
+# Generate Fig 1, Fig 2, and Fig 3
+python visualization.py
+
+```
+
+* **Outputs:**
+* `Fig1_Robustness.png`: ACC vs. Noise Level (Highlighting the robust plateau).
+* `Fig2_Efficiency.png`: Bar charts for Inference Time and Peak Memory.
+* `Fig3_Tradeoff.png`: The Scatter plot showing the "Edge Sweet Spot".
+
+
+
+---
+
+## 📂 Repository Structure
+
+* `auto.py`: **Automation script** that executes all experiments and merges results.
+* `visualization.py`: Script to generate the 3 key figures for the paper.
+* **Experiment Scripts (ORL Dataset):**
+* `l1_orl.py`: **L1-NMF (IRLS)** on ORL.
+* `l2_orl.py`: Standard L2-NMF on ORL.
+* `mu_orl.py`: Multiplicative Update on ORL.
+* `hc_orl.py`: Hypersurface Cost NMF on ORL.
+* `stack_orl.py`: Stacked NMF on ORL.
+
+
+* **Experiment Scripts (YaleB Dataset):**
+* `l1_yale.py`: **L1-NMF (IRLS)** on YaleB.
+* `l2_yale.py`, `mu_yale.py`, `hc_yale.py`, `stack_yale.py`: Baselines on YaleB.
+
+
+* Helper functions.
+* `load_data.py`: Handles image loading, resizing, and salt-and-pepper noise injection.
+* `evaluation.py`: Evaluates ACC, NMI, and RRE.
+
+
+* `data/`: Directory for raw datasets.
+
+---
+
+## 📜 Citation
+
+If you find this code useful for your research, please cite our paper:
+
+```bibtex
+@article{EdgeNMF2025,
+  title={Lightweight and Noise-Resilient Feature Extraction for Edge Computing: A Comparative Study of Robust NMF Algorithms},
+  author={Wu, K.; Li, J.; Yan, Y.; Cai, R.},
+  journal={Under Review},
+  year={2025}
+}
+
+```
+
+*Maintained by [WilsonWukz](https://www.google.com/search?q=https://github.com/WilsonWukz).*
