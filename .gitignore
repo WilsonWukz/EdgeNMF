@@ -20,8 +20,7 @@ env/
 # 3. Data & Large Files (数据集)
 !data/
 datasets/
-ORL/
-YaleB/
+
 
 *.zip
 *.tar.gz
@@ -37,11 +36,6 @@ YaleB/
 *.jpeg
 *.pdf
 *.svg
-
-*.npy
-*.npz
-*.pkl
-*.h5
 
 results/
 outputs/
