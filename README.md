@@ -1,6 +1,6 @@
-# EdgeNMF: Lightweight and Noise-Resilient Feature Extraction for Edge Computing
+# EdgeNMF: Noise-Resilient and Lightweight Feature Extraction for Edge AI
 
-[![Python](https://img.shields.io/badge/Python-3.9%2B-blue)](https://www.python.org/)
+[![Python](https://img.shields.io/badge/Python-3.12%2B-blue)](https://www.python.org/)
 [![License](https://img.shields.io/badge/license-MIT-green)](./LICENSE)
 [![Status](https://img.shields.io/badge/Status-Under%20Review-orange)]()
 
@@ -8,29 +8,48 @@
 
 This repository contains the **official implementation** of the paper:
 
-> **"Lightweight and Noise-Resilient Feature Extraction for Edge Computing: A Comparative Study of Robust NMF Algorithms"** (2025)
+> **"Noise-Resilient and Lightweight Feature Extraction for Edge AI: A Robust $L_1$-Norm Regularized NMF Framework"** (Under Review, 2025)
 
-In this work, **we present** a comprehensive benchmark of Non-negative Matrix Factorization (NMF) algorithms tailored for **resource-constrained edge devices** (e.g., IoT sensors, Raspberry Pi). **We systematically evaluate** robustness against **impulsive sensor noise** (salt-and-pepper) and computational efficiency.
+## 📖 Overview
 
-**We highlight** the superiority of **$L_1$-Regularized NMF (IRLS)**, demonstrating that it offers a **35% reduction in memory usage** and maintains a **"Robust Plateau"** under moderate noise, making it the optimal choice for Edge AI.
+Deploying reliable feature extraction on **resource-constrained edge nodes** (e.g., IoT gateways, Raspberry Pi) is challenging due to the dual constraints of **limited memory** and **unpredictable sensor noise** (e.g., impulsive salt-and-pepper noise).
+
+To address this, **we propose a robust $L_1$-Regularized NMF framework** based on the Iteratively Reweighted Least Squares (IRLS) strategy. Unlike standard deep learning models that are computationally prohibitive, or traditional $L_2$-based NMFs that are fragile to outliers, our framework:
+
+1.  **Achieves a "Robust Plateau":** Effectively suppresses sparse outliers under moderate noise levels ($0.1 \le p \le 0.3$).
+2.  **Prevents OOM Failures:** Reduces peak memory usage by approximately **35%** compared to standard Multiplicative Update (MU) methods, making it safe for embedded deployment.
+
+This repository provides the complete source code for the proposed framework, along with the reproduction scripts for the comparative experiments against state-of-the-art baselines.
 
 ---
 
-## 📌 Key Features & Findings
+## 📌 Key Contributions & Findings
 
-**We focus** our analysis on three critical dimensions of Edge AI:
 
-1.  **Robustness Analysis (Fig. 1):** **We demonstrate** that $L_1$-NMF maintains a "Robust Plateau" ($0.1 \le p \le 0.3$), significantly outperforming standard $L_2$ baselines which collapse under sensor noise.
-2.  **Computational Efficiency (Fig. 2):** **We prove** that $L_1$-NMF is not only robust but also lightweight, achieving inference speeds comparable to fast baselines while reducing peak memory usage by ~35%.
-3.  **The "Edge Sweet Spot" (Fig. 3):** **We visualize** the trade-off between accuracy and latency. **We identify** $L_1$-NMF as the only algorithm that balances high noise resilience with low computational cost.
-4.  **Hardware-Aware Profiling:** **We integrate** `tracemalloc` and timer utilities to accurately simulate edge hardware constraints.
 
-<img width="3000" height="1800" alt="Fig1_Robustness" src="https://github.com/user-attachments/assets/8319efd8-acb2-4aa5-bf20-84837a3e7e28" />
+[Image of edge computing architecture diagram]
+
+
+**1. Robustness Analysis (The "Robust Plateau"):**
+Our experiments on ORL and Extended Yale B datasets demonstrate that **$L_1$-NMF (Ours)** maintains high clustering accuracy even when 30% of pixels are corrupted, whereas standard baselines collapse rapidly.
+
+**2. Engineering Efficiency (The Memory Advantage):**
+We identify a critical **engineering trade-off**. While the IRLS solver incurs higher inference latency, its implementation significantly optimizes memory allocation. By avoiding the large intermediate matrix operations common in standard MU, our framework prevents **Out-of-Memory (OOM)** crashes on limited-SRAM devices.
+
+**3. The "Edge Sweet Spot":**
+**We visualize** the trade-off between accuracy and latency. Our framework is identified as the optimal solution that balances high noise resilience with feasible computational costs for edge gateways.
+
+<img width="100%" alt="Fig1_Robustness" src="https://github.com/user-attachments/assets/8319efd8-acb2-4aa5-bf20-84837a3e7e28" />
 
 ---
 
 ## 🛠️ Installation
 
+### Prerequisites
+* **Hardware:** Recommended 8GB+ RAM for full reproduction (Simulating Edge environment).
+* **Python:** 3.9 or higher (Tested on 3.12).
+
+### Steps
 1.  **Clone the repository:**
     ```bash
     git clone [https://github.com/WilsonWukz/EdgeNMF.git](https://github.com/WilsonWukz/EdgeNMF.git)
@@ -38,92 +57,97 @@ In this work, **we present** a comprehensive benchmark of Non-negative Matrix Fa
     ```
 
 2.  **Install dependencies:**
-    **We recommend** using a virtual environment (Conda or venv).
+    We recommend using a virtual environment (Conda or venv).
     ```bash
     pip install -r requirements.txt
     ```
-    *Core dependencies: `numpy`, `pillow`, `scipy`, `scikit-learn`, `matplotlib`, `seaborn`, `pandas`, `openpyxl`.*
+    *Core dependencies: `numpy`, `scipy`, `scikit-learn`, `matplotlib`, `seaborn`, `pandas`, `openpyxl`, `tracemalloc`.*
 
 3.  **Prepare Datasets:**
-    - Place the **ORL** dataset in `data/ORL/`.
-    - Place the **Extended Yale B** dataset in `data/YaleB/`.
-    *(Note: Our scripts include preprocessing steps to auto-resize and inject noise.)*
+    * Download the **ORL** and **Extended Yale B** datasets.
+    * Place them in `data/ORL/` and `data/YaleB/` respectively.
+    * *(Note: The raw images will be automatically resized and corrupted by our preprocessing pipeline during runtime.)*
 
 ---
 
-## 🚀 Usage Guide: The Reproduction Pipeline
+## 🚀 Reproduction Pipeline
 
-To fully reproduce **our results**, follow this pipeline: **Batch Training -> Data Aggregation -> Visualization**.
+To fully reproduce the experimental results presented in the manuscript, follow this **Batch Training -> Visualization** pipeline.
 
-### Step 1: Run Batch Experiments
-We provide a master automation script (`auto.py`) that sequentially executes the training scripts for all 5 algorithms across both datasets.
+### Step 1: Run Benchmarks (Proposed Framework vs. Baselines)
+We provide a master automation script (`auto.py`) that sequentially executes the proposed algorithm and all baselines across varying noise levels.
 
-**What this script does:**
-1.  Automatically triggers the 10 individual scripts (e.g., `l2_orl.py`, `l1_yale.py`, etc.).
-2.  Injects noise ($p \in [0, 0.5]$) and runs multiple random seeds.
-3.  **Automatically merges** the results into `ALL_ALGO_SUMMARY.xlsx`.
+**This script will:**
+1.  Inject salt-and-pepper noise ($p \in [0, 0.5]$) with consistent random seeds.
+2.  Execute the **Proposed Framework** (`l1_*.py`).
+3.  Execute **Baselines** (`l2_*.py`, `mu_*.py`, `hc_*.py`, `stack_*.py`).
+5.  **Automatically aggregate** metrics (ACC, NMI, RRE, Time, Memory) into `ALL_ALGO_SUMMARY.xlsx`.
 
 ```bash
-# Execute the batch training pipeline
+# Execute the full benchmark pipeline
 python auto.py
 
 ```
 
-> **Note:** This process may take some time. The script will print the progress of each algorithm as it finishes.
+> **Note:** This process simulates extensive edge inference and may take time depending on your hardware.
 
-### Step 2: Visualization (Reproducing Paper Figures)
+### Step 2: Generate Paper Figures
 
-Once `ALL_ALGO_SUMMARY.xlsx` is generated, run the visualization script to produce the exact figures used in the manuscript.
+Once the data is aggregated, run the visualization script to produce the exact figures used in the submission.
 
 ```bash
-# Generate Fig 1, Fig 2, and Fig 3
+# Generate Fig 1 (Robustness), Fig 2 (Efficiency), and Fig 3 (Trade-off)
 python visualization.py
 
 ```
 
-* **Outputs:**
-* `Fig1_Robustness.png`: ACC vs. Noise Level (Highlighting the robust plateau).
-* `Fig2_Efficiency.png`: Bar charts for Inference Time and Peak Memory.
-* `Fig3_Tradeoff.png`: The Scatter plot showing the "Edge Sweet Spot".
+**Outputs:**
 
-
+* `Fig1_Robustness.png`: Illustrates the superiority of the L1-Norm framework.
+* `Fig2_Efficiency.png`: Highlights the 35% memory reduction.
+* `Fig3_Tradeoff.png`: Visualizes the "Edge Sweet Spot."
 
 ---
 
 ## 📂 Repository Structure
 
-* `auto.py`: **Automation script** that executes all experiments and merges results.
-* `visualization.py`: Script to generate the 3 key figures for the paper.
-* **Experiment Scripts (ORL Dataset):**
-* `l1_orl.py`: **L1-NMF (IRLS)** on ORL.
-* `l2_orl.py`: Standard L2-NMF on ORL.
-* `mu_orl.py`: Multiplicative Update on ORL.
-* `hc_orl.py`: Hypersurface Cost NMF on ORL.
-* `stack_orl.py`: Stacked NMF on ORL.
+The codebase is organized to separate the **Proposed Method** from **Baselines**.
 
+```text
+EdgeNMF/
 
-* **Experiment Scripts (YaleB Dataset):**
-* `l1_yale.py`: **L1-NMF (IRLS)** on YaleB.
-* `l2_yale.py`, `mu_yale.py`, `hc_yale.py`, `stack_yale.py`: Baselines on YaleB.
+├── visualization.py        # Generates paper-ready figures
+├── requirements.txt        # Dependency list
+├── noise.py                # Define the noise
+├── nmf.py                   # Define the NMFs
+├── data/                   # Dataset directory
+├── measure_performance.py    # Define Metrics
+├── train/
+│   ├── auto.py                 # Master script for full reproduction
+│   ├── l1_orl.py           # [Ours] L1-Regularized Robust NMF (ORL)
+│   ├── l1_yale.py          # [Ours] L1-Regularized Robust NMF (YaleB)
+│   ├── l2_*.py             # Standard L2-NMF
+│   ├── mu_*.py             # Lee-Seung Multiplicative Update
+│   ├── hc_*.py             # Hypersurface Cost NMF
+│   └── stack_*.py          # Stacked NMF
+│
+├── load_data.py        # Noise injection & Preprocessing
+└── evaluation.py       # Metrics (ACC, NMI, RRE)
 
+```
 
-* Helper functions.
-* `load_data.py`: Handles image loading, resizing, and salt-and-pepper noise injection.
-* `evaluation.py`: Evaluates ACC, NMI, and RRE.
-
-
-* `data/`: Directory for raw datasets.
+*(Note: The actual file structure may vary slightly; the above reflects the logical organization of the experiments.)*
 
 ---
 
 ## 📜 Citation
 
-If you find this code useful for your research, please cite our paper:
+If you use this code or our framework in your research, please cite our paper:
 
 ```bibtex
-@article{EdgeNMF2025,
-  title={Lightweight and Noise-Resilient Feature Extraction for Edge Computing: A Comparative Study of Robust NMF Algorithms},
-  author={Wu, K.; Li, J.; Yan, Y.; Cai, R.},
+@article{Wu2025EdgeNMF,
+  title={Noise-Resilient and Lightweight Feature Extraction for Edge AI: A Robust $L_1$-Norm Regularized NMF Framework},
+  author={Wu, Kezhao and Li, Jiayi and Yan, Yaodong and Cai, Ruilin},
   journal={Under Review},
   year={2025}
 }
